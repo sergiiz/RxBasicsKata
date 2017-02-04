@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.concurrent.FutureTask;
 
 import io.reactivex.Observable;
+import io.reactivex.Scheduler;
 import io.reactivex.Single;
 
 class CountriesServiceSolved implements CountriesService {
@@ -14,7 +15,6 @@ class CountriesServiceSolved implements CountriesService {
     public Single<String> countryNameInCapitals(Country country) {
         return Observable.just(country) // solution
                 .map(item -> item.name.toUpperCase(Locale.US))
-                .onErrorReturn(error -> "[NOT AVAILABLE]")
                 .singleOrError();
     }
 
@@ -44,7 +44,7 @@ class CountriesServiceSolved implements CountriesService {
     }
 
     @Override
-    public Single<Boolean> isPopulationMoreThan1Million(List<Country> countries) {
+    public Single<Boolean> isAllCountriesPopulationMoreThanOneMillion(List<Country> countries) {
         return Observable.fromIterable(countries)  // solution
                 .all(country -> country.population > 1000000);
     }
@@ -57,8 +57,8 @@ class CountriesServiceSolved implements CountriesService {
     }
 
     @Override
-    public Observable<Country> listPopulationMoreThanOneMillion(FutureTask<List<Country>> countriesFromNetwork) {
-        return Observable.fromFuture(countriesFromNetwork)  // solution
+    public Observable<Country> listPopulationMoreThanOneMillion(FutureTask<List<Country>> countriesFromNetwork, Scheduler scheduler) {
+        return Observable.fromFuture(countriesFromNetwork, scheduler)  // solution
                 .flatMap(countriesList -> Observable.fromIterable(countriesList))
                 .filter(country -> country.population > 1000000);
     }

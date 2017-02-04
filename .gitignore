@@ -2,7 +2,6 @@
 *.iws
 .gradle
 .idea
-/local.properties
 /.idea/workspace.xml
 /.idea/libraries
 .DS_Store
@@ -10,7 +9,7 @@
 /captures
 /secret
 
-
+local.properties
 release.properties
 project.properties
 .gitignore

@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.concurrent.FutureTask;
 
 import io.reactivex.observers.TestObserver;
+import io.reactivex.schedulers.TestScheduler;
 
 public class CountriesServiceSolvedTest {
 
@@ -27,7 +28,9 @@ public class CountriesServiceSolvedTest {
     public void rx_CountryNameInCapitals() {
         Country testCountry = CountriesTestProvider.countries().get(0);
         String expected = testCountry.name.toUpperCase(Locale.US);
-        TestObserver<String> testObserver = countriesService.countryNameInCapitals(testCountry).test();
+        TestObserver<String> testObserver = countriesService
+                .countryNameInCapitals(testCountry)
+                .test();
         testObserver.assertNoErrors();
         testObserver.assertValue(expected);
     }
@@ -35,7 +38,9 @@ public class CountriesServiceSolvedTest {
     @Test
     public void rx_CountAmountOfCountries() {
         Integer expected = CountriesTestProvider.countries().size();
-        TestObserver<Integer> testObserver = countriesService.countCountries(allCountries).test();
+        TestObserver<Integer> testObserver = countriesService
+                .countCountries(allCountries)
+                .test();
         testObserver.assertNoErrors();
         testObserver.assertValue(expected);
     }
@@ -43,7 +48,9 @@ public class CountriesServiceSolvedTest {
     @Test
     public void rx_ListPopulationOfEachCountry() {
         List<Long> expectedResult = CountriesTestProvider.populationOfCountries();
-        TestObserver<Long> testObserver = countriesService.listPopulationOfEachCountry(allCountries).test();
+        TestObserver<Long> testObserver = countriesService
+                .listPopulationOfEachCountry(allCountries)
+                .test();
         testObserver.assertValueSet(expectedResult);
         testObserver.assertNoErrors();
     }
@@ -51,42 +58,40 @@ public class CountriesServiceSolvedTest {
     @Test
     public void rx_ListNameOfEachCountry() {
         List<String> expectedResult = CountriesTestProvider.namesOfCountries();
-        TestObserver<String> testObserver = countriesService.listNameOfEachCountry(allCountries).test();
+        TestObserver<String> testObserver = countriesService
+                .listNameOfEachCountry(allCountries)
+                .test();
         testObserver.assertValueSet(expectedResult);
         testObserver.assertNoErrors();
     }
-
-    @Test
-    public void rx_CountryNameInCapitalsWithNPE() {
-        Country testCountry = new Country(null, "AAA", 1000);
-        String expected = "[NOT AVAILABLE]";
-        TestObserver<String> testObserver = countriesService.countryNameInCapitals(testCountry).test();
-        testObserver.assertNoErrors();
-        testObserver.assertValue(expected);
-    }
-
 
     @Test
     public void rx_ListOnly3rdAnd4thCountry() {
         List<Country> expectedResult = new ArrayList<>();
+        expectedResult.add(allCountries.get(2));
         expectedResult.add(allCountries.get(3));
-        expectedResult.add(allCountries.get(4));
 
-        TestObserver<Country> testObserver = countriesService.listOnly3rdAnd4thCountry(allCountries).test();
+        TestObserver<Country> testObserver = countriesService
+                .listOnly3rdAnd4thCountry(allCountries)
+                .test();
         testObserver.assertValueSet(expectedResult);
         testObserver.assertNoErrors();
     }
 
     @Test
-    public void rx_isPopulationMoreThanOneMillion_Positive() {
-        TestObserver<Boolean> testObserver = countriesService.isPopulationMoreThan1Million(CountriesTestProvider.countriesPopulationMoreThanOneMillion()).test();
+    public void rx_IsAllCountriesPopulationMoreThanOneMillion_Positive() {
+        TestObserver<Boolean> testObserver = countriesService
+                .isAllCountriesPopulationMoreThanOneMillion(CountriesTestProvider.countriesPopulationMoreThanOneMillion())
+                .test();
         testObserver.assertResult(true);
         testObserver.assertNoErrors();
     }
 
     @Test
-    public void rx_isPopulationMoreThanOneMillion_Negative() {
-        TestObserver<Boolean> testObserver = countriesService.isPopulationMoreThan1Million(allCountries).test();
+    public void rx_IsAllCountriesPopulationMoreThanOneMillion_Negative() {
+        TestObserver<Boolean> testObserver = countriesService
+                .isAllCountriesPopulationMoreThanOneMillion(allCountries)
+                .test();
         testObserver.assertResult(false);
         testObserver.assertNoErrors();
     }
@@ -94,20 +99,24 @@ public class CountriesServiceSolvedTest {
     @Test
     public void rx_ListPopulationMoreThanOneMillion() {
         List<Country> expectedResult = CountriesTestProvider.countriesPopulationMoreThanOneMillion();
-        TestObserver<Country> testObserver = countriesService.listPopulationMoreThanOneMillion(allCountries).test();
+        TestObserver<Country> testObserver = countriesService
+                .listPopulationMoreThanOneMillion(allCountries)
+                .test();
         testObserver.assertValueSet(expectedResult);
         testObserver.assertNoErrors();
     }
 
     @Test
     public void rx_ListPopulationMoreThanOneMillion_FutureTask() {
-        FutureTask<List<Country>> f = new FutureTask<>(() -> {
-            Thread.sleep(300);
+        FutureTask<List<Country>> futureTask = new FutureTask<>(() -> {
+            Thread.sleep(100);
             return allCountries;
         });
-        new Thread(f).start();
-
-        TestObserver<Country> testObserver = countriesService.listPopulationMoreThanOneMillion(f).test();
+        new Thread(futureTask).start();
+        TestScheduler testScheduler = new TestScheduler();
+        TestObserver<Country> testObserver = countriesService
+                .listPopulationMoreThanOneMillion(futureTask, testScheduler)
+                .test();
         List<Country> expectedResult = CountriesTestProvider.countriesPopulationMoreThanOneMillion();
         testObserver.assertValueSet(expectedResult);
         testObserver.assertNoErrors();
@@ -117,7 +126,9 @@ public class CountriesServiceSolvedTest {
     public void rx_GetCurrencyUsdIfNotFound_When_CurrencyFound() {
         String countryRequested = "Austria";
         String expectedCurrencyValue = "EUR";
-        TestObserver<String> testObserver = countriesService.getCurrencyUsdIfNotFound(countryRequested, allCountries).test();
+        TestObserver<String> testObserver = countriesService
+                .getCurrencyUsdIfNotFound(countryRequested, allCountries)
+                .test();
         testObserver.assertResult(expectedCurrencyValue);
         testObserver.assertNoErrors();
     }
@@ -125,8 +136,10 @@ public class CountriesServiceSolvedTest {
     @Test
     public void rx_GetCurrencyUsdIfNotFound_When_CurrencyNotFound() {
         String countryRequested = "Senegal";
-        String expectedCurrencyValue = "USD (default)";
-        TestObserver<String> testObserver = countriesService.getCurrencyUsdIfNotFound(countryRequested, allCountries).test();
+        String expectedCurrencyValue = "USD";
+        TestObserver<String> testObserver = countriesService
+                .getCurrencyUsdIfNotFound(countryRequested, allCountries)
+                .test();
         testObserver.assertResult(expectedCurrencyValue);
         testObserver.assertNoErrors();
     }
@@ -134,7 +147,9 @@ public class CountriesServiceSolvedTest {
     @Test
     public void rx_SumPopulationOfCountries() {
         // hint: use "reduce" operator
-        TestObserver<Long> testObserver = countriesService.sumPopulationOfCountries(allCountries).test();
+        TestObserver<Long> testObserver = countriesService
+                .sumPopulationOfCountries(allCountries)
+                .test();
         testObserver.assertResult(CountriesTestProvider.sumPopulationOfAllCountries());
         testObserver.assertNoErrors();
     }
