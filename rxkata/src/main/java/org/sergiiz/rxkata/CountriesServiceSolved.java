@@ -39,7 +39,7 @@ class CountriesServiceSolved implements CountriesService {
     @Override
     public Observable<Country> listOnly3rdAnd4thCountry(List<Country> countries) {
         return Observable.fromIterable(countries) // solution
-                .skip(3)
+                .skip(2)
                 .take(2);
     }
 
@@ -68,7 +68,7 @@ class CountriesServiceSolved implements CountriesService {
         return Observable.fromIterable(countries) // solution
                 .filter(country -> country.name.equals(countryName))
                 .map(country -> country.currency)
-                .defaultIfEmpty("USD (default)");
+                .defaultIfEmpty("USD");
     }
 
     @Override
