@@ -1,0 +1,17 @@
+*.iml
+*.iws
+.gradle
+.idea
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/captures
+/secret
+
+
+release.properties
+project.properties
+.gitignore
+.idea/
