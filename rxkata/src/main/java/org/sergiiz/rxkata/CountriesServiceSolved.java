@@ -49,6 +49,11 @@ class CountriesServiceSolved implements CountriesService {
     }
 
     @Override
+    public Observable<Country> listPopulationMoreThanOneMillionWithTimeoutFallbackToEmpty(final FutureTask<List<Country>> countriesFromNetwork) {
+        return null; // put your solution here
+    }
+
+    @Override
     public Observable<String> getCurrencyUsdIfNotFound(String countryName, List<Country> countries) {
         return null; // put your solution here
     }
