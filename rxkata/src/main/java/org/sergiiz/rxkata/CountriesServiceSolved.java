@@ -1,32 +1,27 @@
 package org.sergiiz.rxkata;
 
+import io.reactivex.Observable;
+import io.reactivex.Scheduler;
+import io.reactivex.Single;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.FutureTask;
 
-import io.reactivex.Observable;
-import io.reactivex.Scheduler;
-import io.reactivex.Single;
-
 class CountriesServiceSolved implements CountriesService {
 
     @Override
     public Single<String> countryNameInCapitals(Country country) {
-        return Observable.just(country) // solution
-                .map(item -> item.name.toUpperCase(Locale.US))
-                .singleOrError();
+        return Single.just(country.name.toUpperCase(Locale.US)); // solution
     }
 
     public Single<Integer> countCountries(List<Country> countries) {
-        return Observable.just(countries) // solution
-                .map(items -> items.size())
-                .single(0);
+        return Single.just(countries.size()); // solution
     }
 
     public Observable<Long> listPopulationOfEachCountry(List<Country> countries) {
-        return Observable.just(countries) // solution
-                .flatMapIterable(countriesList -> countriesList)
+        return Observable.fromIterable(countries) // solution
                 .map(country -> country.population);
     }
 
