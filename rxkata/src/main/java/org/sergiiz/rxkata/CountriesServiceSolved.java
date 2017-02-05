@@ -1,7 +1,6 @@
 package org.sergiiz.rxkata;
 
 import io.reactivex.Observable;
-import io.reactivex.Scheduler;
 import io.reactivex.Single;
 
 import java.util.List;
@@ -52,8 +51,8 @@ class CountriesServiceSolved implements CountriesService {
     }
 
     @Override
-    public Observable<Country> listPopulationMoreThanOneMillion(FutureTask<List<Country>> countriesFromNetwork, Scheduler scheduler) {
-        return Observable.fromFuture(countriesFromNetwork, scheduler)  // solution
+    public Observable<Country> listPopulationMoreThanOneMillion(FutureTask<List<Country>> countriesFromNetwork) {
+        return Observable.fromFuture(countriesFromNetwork)  // solution
                 .flatMap(countriesList -> Observable.fromIterable(countriesList))
                 .filter(country -> country.population > 1000000);
     }

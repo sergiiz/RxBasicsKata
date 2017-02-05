@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.concurrent.FutureTask;
 
 import io.reactivex.Observable;
-import io.reactivex.Scheduler;
 import io.reactivex.Single;
 
 interface CountriesService {
@@ -24,7 +23,7 @@ interface CountriesService {
 
     Observable<Country> listPopulationMoreThanOneMillion(List<Country> countries);
 
-    Observable<Country> listPopulationMoreThanOneMillion(FutureTask<List<Country>> countriesFromNetwork, Scheduler scheduler);
+    Observable<Country> listPopulationMoreThanOneMillion(FutureTask<List<Country>> countriesFromNetwork);
 
     Observable<String> getCurrencyUsdIfNotFound(String countryName, List<Country> countries);
 
