@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.concurrent.FutureTask;
 
 import io.reactivex.observers.TestObserver;
-import io.reactivex.schedulers.TestScheduler;
 
 public class CountriesServiceSolvedTest {
 
@@ -113,11 +112,11 @@ public class CountriesServiceSolvedTest {
             return allCountries;
         });
         new Thread(futureTask).start();
-        TestScheduler testScheduler = new TestScheduler();
         TestObserver<Country> testObserver = countriesService
-                .listPopulationMoreThanOneMillion(futureTask, testScheduler)
+                .listPopulationMoreThanOneMillion(futureTask)
                 .test();
         List<Country> expectedResult = CountriesTestProvider.countriesPopulationMoreThanOneMillion();
+        testObserver.awaitTerminalEvent();
         testObserver.assertValueSet(expectedResult);
         testObserver.assertNoErrors();
     }

@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.concurrent.FutureTask;
 
 import io.reactivex.Observable;
-import io.reactivex.Scheduler;
 import io.reactivex.Single;
 
 class CountriesServiceSolved implements CountriesService {
@@ -45,7 +44,7 @@ class CountriesServiceSolved implements CountriesService {
     }
 
     @Override
-    public Observable<Country> listPopulationMoreThanOneMillion(FutureTask<List<Country>> countriesFromNetwork, Scheduler scheduler) {
+    public Observable<Country> listPopulationMoreThanOneMillion(FutureTask<List<Country>> countriesFromNetwork) {
         return null; // put your solution here
     }
 
