@@ -12,6 +12,18 @@ class Country {
         this.population = population;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public long getPopulation() {
+        return population;
+    }
+
     @Override
     public String toString() {
         return "Country{" +
