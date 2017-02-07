@@ -33,4 +33,7 @@ interface CountriesService {
 
     Observable<Long> combineAndReturnTheSumOfPopulation(Observable<Country> countryObservable1,
                                                         Observable<Country> countryObservable2);
+
+    Single<Boolean> checkIfBothObservableEmitsSameItems(Observable<Country> countryObservable1,
+                                                        Observable<Country> countryObservable2);
 }

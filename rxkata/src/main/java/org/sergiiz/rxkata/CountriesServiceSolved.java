@@ -67,4 +67,10 @@ class CountriesServiceSolved implements CountriesService {
                                                                Observable<Country> countryObservable2){
         return null; // put your solution here
     }
+
+    @Override
+    public Single<Boolean> checkIfBothObservableEmitsSameItems(Observable<Country> countryObservable1,
+                                                   Observable<Country> countryObservable2){
+        return null; // put your solution here
+    }
 }
