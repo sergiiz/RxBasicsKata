@@ -1,5 +1,6 @@
 package org.sergiiz.rxkata;
 
+import io.reactivex.Observable;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -163,5 +164,17 @@ public class CountriesServiceSolvedTest {
         }
         values.assertResult(expected);
         values.assertNoErrors();
+    }
+
+    @Test
+    public void rx_CombineTwoObservablesAndReturnSumOfPopulation(){
+        // hint: use "map" operator
+        TestObserver<Long> testObserver = countriesService
+                .combineAndReturnTheSumOfPopulation(Observable.fromIterable(allCountries),
+                        Observable.fromIterable(allCountries))
+                .test();
+        testObserver.assertResult(CountriesTestProvider.sumPopulationOfAllCountries()
+                + CountriesTestProvider.sumPopulationOfAllCountries());
+        testObserver.assertNoErrors();
     }
 }
