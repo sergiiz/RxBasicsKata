@@ -80,4 +80,13 @@ class CountriesServiceSolved implements CountriesService {
                         country -> country.name,
                         country -> country.population);
     }
+
+    @Override
+    public Observable<Long> combineAndReturnTheSumOfPopulation(Observable<Country> countryObservable1,
+                                                               Observable<Country> countryObservable2) {
+        return Observable.merge(countryObservable1, countryObservable2)
+                .map(country -> country.population)
+                .reduce((i1, i2) -> i1 + i2)
+                .toObservable();
+    }
 }

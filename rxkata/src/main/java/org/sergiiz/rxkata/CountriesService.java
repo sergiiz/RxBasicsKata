@@ -31,4 +31,6 @@ interface CountriesService {
 
     Single<Map<String, Long>> mapCountriesToNamePopulation(List<Country> countries);
 
+    Observable<Long> combineAndReturnTheSumOfPopulation(Observable<Country> countryObservable1,
+                                                        Observable<Country> countryObservable2);
 }
