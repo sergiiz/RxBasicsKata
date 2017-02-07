@@ -25,6 +25,12 @@ interface CountriesService {
 
     Observable<Country> listPopulationMoreThanOneMillion(FutureTask<List<Country>> countriesFromNetwork);
 
+    /**
+     * @param countriesFromNetwork an async task which is sometimes very very slow
+     * @return the filtered values from the {@link FutureTask} or an {@link Observable#empty()} if there are no values within 1 second
+     */
+    Observable<Country> listPopulationMoreThanOneMillionWithTimeoutFallbackToEmpty(FutureTask<List<Country>> countriesFromNetwork);
+
     Observable<String> getCurrencyUsdIfNotFound(String countryName, List<Country> countries);
 
     Observable<Long> sumPopulationOfCountries(List<Country> countries);

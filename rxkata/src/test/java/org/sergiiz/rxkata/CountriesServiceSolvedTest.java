@@ -1,6 +1,7 @@
 package org.sergiiz.rxkata;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -9,13 +10,18 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.observers.TestObserver;
+import org.junit.rules.Timeout;
 
 public class CountriesServiceSolvedTest {
 
     private CountriesService countriesService;
     private List<Country> allCountries;
+
+    @Rule
+    public Timeout globalTimeout = Timeout.seconds(2);
 
     @Before
     public void setUp() {
@@ -122,6 +128,22 @@ public class CountriesServiceSolvedTest {
     }
 
     @Test
+    public void rx_ListPopulationMoreThanOneMillion_WithTimeoutFallbackToEmpty() {
+        FutureTask<List<Country>> futureTask = new FutureTask<>(() -> {
+            TimeUnit.HOURS.sleep(1);
+            return allCountries;
+        });
+        new Thread(futureTask).start();
+        TestObserver<Country> testObserver = countriesService
+                .listPopulationMoreThanOneMillionWithTimeoutFallbackToEmpty(futureTask)
+                .test();
+        testObserver.awaitTerminalEvent();
+        testObserver.assertComplete();
+        testObserver.assertNoValues();
+        testObserver.assertNoErrors();
+    }
+
+
     public void rx_GetCurrencyUsdIfNotFound_When_CountryFound() {
         String countryRequested = "Austria";
         String expectedCurrencyValue = "EUR";
