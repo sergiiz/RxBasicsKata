@@ -122,7 +122,7 @@ public class CountriesServiceSolvedTest {
     }
 
     @Test
-    public void rx_GetCurrencyUsdIfNotFound_When_CurrencyFound() {
+    public void rx_GetCurrencyUsdIfNotFound_When_CountryFound() {
         String countryRequested = "Austria";
         String expectedCurrencyValue = "EUR";
         TestObserver<String> testObserver = countriesService
@@ -133,7 +133,7 @@ public class CountriesServiceSolvedTest {
     }
 
     @Test
-    public void rx_GetCurrencyUsdIfNotFound_When_CurrencyNotFound() {
+    public void rx_GetCurrencyUsdIfNotFound_When_CountryNotFound() {
         String countryRequested = "Senegal";
         String expectedCurrencyValue = "USD";
         TestObserver<String> testObserver = countriesService
