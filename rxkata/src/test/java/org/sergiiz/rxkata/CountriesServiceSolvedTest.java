@@ -112,23 +112,24 @@ public class CountriesServiceSolvedTest {
     }
 
     @Test
-    public void rx_ListPopulationMoreThanOneMillion_FutureTask() {
+    public void rx_ListPopulationMoreThanOneMillionWithTimeoutFallbackToEmpty_When_NoTimeout() {
         FutureTask<List<Country>> futureTask = new FutureTask<>(() -> {
-            Thread.sleep(100);
+            TimeUnit.MILLISECONDS.sleep(100);
             return allCountries;
         });
         new Thread(futureTask).start();
         TestObserver<Country> testObserver = countriesService
-                .listPopulationMoreThanOneMillion(futureTask)
+                .listPopulationMoreThanOneMillionWithTimeoutFallbackToEmpty(futureTask)
                 .test();
         List<Country> expectedResult = CountriesTestProvider.countriesPopulationMoreThanOneMillion();
         testObserver.awaitTerminalEvent();
+        testObserver.assertComplete();
         testObserver.assertValueSet(expectedResult);
         testObserver.assertNoErrors();
     }
 
     @Test
-    public void rx_ListPopulationMoreThanOneMillion_WithTimeoutFallbackToEmpty() {
+    public void rx_ListPopulationMoreThanOneMillionWithTimeoutFallbackToEmpty_When_Timeout() {
         FutureTask<List<Country>> futureTask = new FutureTask<>(() -> {
             TimeUnit.HOURS.sleep(1);
             return allCountries;
