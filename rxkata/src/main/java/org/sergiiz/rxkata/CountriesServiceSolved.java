@@ -89,4 +89,9 @@ class CountriesServiceSolved implements CountriesService {
                 .reduce((i1, i2) -> i1 + i2)
                 .toObservable();
     }
+
+    @Override
+    public Single<Boolean> checkIfBothObservableEmitsSameItems(Observable<Country> countryObservable1, Observable<Country> countryObservable2) {
+        return Observable.sequenceEqual(countryObservable1,countryObservable2);
+    }
 }

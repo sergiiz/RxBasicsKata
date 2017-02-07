@@ -177,4 +177,24 @@ public class CountriesServiceSolvedTest {
                 + CountriesTestProvider.sumPopulationOfAllCountries());
         testObserver.assertNoErrors();
     }
+
+    @Test
+    public void rx_CheckIfBothObservableEmitsSameItemsPositive(){
+        TestObserver<Boolean> testObserver = countriesService
+                .checkIfBothObservableEmitsSameItems(Observable.fromIterable(allCountries),
+                        Observable.fromIterable(allCountries))
+                .test();
+        testObserver.assertResult(true);
+        testObserver.assertNoErrors();
+    }
+
+    @Test
+    public void rx_CheckIfBothObservableEmitsSameItemsNegative(){
+        TestObserver<Boolean> testObserver = countriesService
+                .checkIfBothObservableEmitsSameItems(Observable.fromIterable(allCountries),
+                        Observable.empty())
+                .test();
+        testObserver.assertResult(false);
+        testObserver.assertNoErrors();
+    }
 }
