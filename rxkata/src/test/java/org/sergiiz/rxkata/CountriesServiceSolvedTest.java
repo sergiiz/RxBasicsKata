@@ -1,6 +1,7 @@
 package org.sergiiz.rxkata;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -9,13 +10,18 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.observers.TestObserver;
+import org.junit.rules.Timeout;
 
 public class CountriesServiceSolvedTest {
 
     private CountriesService countriesService;
     private List<Country> allCountries;
+
+    @Rule
+    public Timeout globalTimeout = Timeout.seconds(2);
 
     @Before
     public void setUp() {
@@ -106,23 +112,40 @@ public class CountriesServiceSolvedTest {
     }
 
     @Test
-    public void rx_ListPopulationMoreThanOneMillion_FutureTask() {
+    public void rx_ListPopulationMoreThanOneMillionWithTimeoutFallbackToEmpty_When_NoTimeout() {
         FutureTask<List<Country>> futureTask = new FutureTask<>(() -> {
-            Thread.sleep(100);
+            TimeUnit.MILLISECONDS.sleep(100);
             return allCountries;
         });
         new Thread(futureTask).start();
         TestObserver<Country> testObserver = countriesService
-                .listPopulationMoreThanOneMillion(futureTask)
+                .listPopulationMoreThanOneMillionWithTimeoutFallbackToEmpty(futureTask)
                 .test();
         List<Country> expectedResult = CountriesTestProvider.countriesPopulationMoreThanOneMillion();
         testObserver.awaitTerminalEvent();
+        testObserver.assertComplete();
         testObserver.assertValueSet(expectedResult);
         testObserver.assertNoErrors();
     }
 
     @Test
-    public void rx_GetCurrencyUsdIfNotFound_When_CurrencyFound() {
+    public void rx_ListPopulationMoreThanOneMillionWithTimeoutFallbackToEmpty_When_Timeout() {
+        FutureTask<List<Country>> futureTask = new FutureTask<>(() -> {
+            TimeUnit.HOURS.sleep(1);
+            return allCountries;
+        });
+        new Thread(futureTask).start();
+        TestObserver<Country> testObserver = countriesService
+                .listPopulationMoreThanOneMillionWithTimeoutFallbackToEmpty(futureTask)
+                .test();
+        testObserver.awaitTerminalEvent();
+        testObserver.assertComplete();
+        testObserver.assertNoValues();
+        testObserver.assertNoErrors();
+    }
+
+    @Test
+    public void rx_GetCurrencyUsdIfNotFound_When_CountryFound() {
         String countryRequested = "Austria";
         String expectedCurrencyValue = "EUR";
         TestObserver<String> testObserver = countriesService
@@ -133,7 +156,7 @@ public class CountriesServiceSolvedTest {
     }
 
     @Test
-    public void rx_GetCurrencyUsdIfNotFound_When_CurrencyNotFound() {
+    public void rx_GetCurrencyUsdIfNotFound_When_CountryNotFound() {
         String countryRequested = "Senegal";
         String expectedCurrencyValue = "USD";
         TestObserver<String> testObserver = countriesService
