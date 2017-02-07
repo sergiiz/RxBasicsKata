@@ -143,7 +143,7 @@ public class CountriesServiceSolvedTest {
         testObserver.assertNoErrors();
     }
 
-
+    @Test
     public void rx_GetCurrencyUsdIfNotFound_When_CountryFound() {
         String countryRequested = "Austria";
         String expectedCurrencyValue = "EUR";
