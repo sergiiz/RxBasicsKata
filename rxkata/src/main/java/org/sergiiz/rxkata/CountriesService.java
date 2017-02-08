@@ -36,4 +36,7 @@ interface CountriesService {
 
     Single<Boolean> checkIfBothObservableEmitsSameItems(Observable<Country> countryObservable1,
                                                         Observable<Country> countryObservable2);
+
+    Single<Boolean> checkIfObservableEmitsGivenItem(List<Country> countries,
+                                                    Country country);
 }

@@ -73,4 +73,9 @@ class CountriesServiceSolved implements CountriesService {
                                                    Observable<Country> countryObservable2){
         return null; // put your solution here
     }
+
+    @Override
+    public Single<Boolean> checkIfObservableEmitsGivenItem(List<Country> countries, Country country) {
+        return null; // put your solution here
+    }
 }
