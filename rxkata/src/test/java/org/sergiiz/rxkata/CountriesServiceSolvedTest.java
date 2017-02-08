@@ -197,4 +197,23 @@ public class CountriesServiceSolvedTest {
         testObserver.assertResult(false);
         testObserver.assertNoErrors();
     }
+
+    @Test
+    public void rx_CheckIfItemExistsPositive(){
+        // hint: use "contains" operator
+        TestObserver<Boolean> testObserver =
+                countriesService.checkIfObservableEmitsGivenItem(allCountries,allCountries.get(0))
+                        .test();
+        testObserver.assertResult(true);
+        testObserver.assertNoErrors();
+    }
+
+    @Test
+    public void rx_CheckIfItemExistsNegative(){
+        TestObserver<Boolean> testObserver =
+                countriesService.checkIfObservableEmitsGivenItem(allCountries,new Country("","",1))
+                        .test();
+        testObserver.assertResult(false);
+        testObserver.assertNoErrors();
+    }
 }

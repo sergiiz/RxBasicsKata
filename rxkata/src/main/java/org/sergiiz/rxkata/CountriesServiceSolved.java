@@ -94,4 +94,10 @@ class CountriesServiceSolved implements CountriesService {
     public Single<Boolean> checkIfBothObservableEmitsSameItems(Observable<Country> countryObservable1, Observable<Country> countryObservable2) {
         return Observable.sequenceEqual(countryObservable1,countryObservable2);
     }
+
+    @Override
+    public Single<Boolean> checkIfObservableEmitsGivenItem(List<Country> countries, Country country) {
+        return Observable.fromIterable(countries)
+                .contains(country);
+    }
 }
