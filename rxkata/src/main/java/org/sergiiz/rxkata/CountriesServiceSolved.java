@@ -82,7 +82,7 @@ class CountriesServiceSolved implements CountriesService {
     }
 
     @Override
-    public Observable<Long> combineAndReturnTheSumOfPopulation(Observable<Country> countryObservable1,
+    public Observable<Long> sumPopulationOfCountries(Observable<Country> countryObservable1,
                                                                Observable<Country> countryObservable2) {
         return Observable.merge(countryObservable1, countryObservable2)
                 .map(country -> country.population)
@@ -91,12 +91,12 @@ class CountriesServiceSolved implements CountriesService {
     }
 
     @Override
-    public Single<Boolean> checkIfBothObservableEmitsSameItems(Observable<Country> countryObservable1, Observable<Country> countryObservable2) {
+    public Single<Boolean> areEmittingSameItems(Observable<Country> countryObservable1, Observable<Country> countryObservable2) {
         return Observable.sequenceEqual(countryObservable1,countryObservable2);
     }
 
     @Override
-    public Single<Boolean> checkIfObservableEmitsGivenItem(List<Country> countries, Country country) {
+    public Single<Boolean> ifObservableEmitsGivenItem(List<Country> countries, Country country) {
         return Observable.fromIterable(countries)
                 .contains(country);
     }

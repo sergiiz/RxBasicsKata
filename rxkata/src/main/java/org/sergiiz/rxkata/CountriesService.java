@@ -31,12 +31,12 @@ interface CountriesService {
 
     Single<Map<String, Long>> mapCountriesToNamePopulation(List<Country> countries);
 
-    Observable<Long> combineAndReturnTheSumOfPopulation(Observable<Country> countryObservable1,
+    Observable<Long> sumPopulationOfCountries(Observable<Country> countryObservable1,
                                                         Observable<Country> countryObservable2);
 
-    Single<Boolean> checkIfBothObservableEmitsSameItems(Observable<Country> countryObservable1,
+    Single<Boolean> areEmittingSameItems(Observable<Country> countryObservable1,
                                                         Observable<Country> countryObservable2);
 
-    Single<Boolean> checkIfObservableEmitsGivenItem(List<Country> countries,
+    Single<Boolean> ifObservableEmitsGivenItem(List<Country> countries,
                                                     Country country);
 }

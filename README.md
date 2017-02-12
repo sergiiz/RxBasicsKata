@@ -20,8 +20,8 @@ A set of simple code challenges to learn RxJava using JUnit tests as an acceptan
 - all: determines whether all items meet some criteria
 - reduce: applies a function to each item sequentially, and emit the final value. For example, it can be used to sum up all emitted items
 - toMap: converts an Observable into another object or data structure
-- merge: combine multiple Observables into one by merging their emissions
-- SequenceEqual: determine whether two Observables emit the same sequence of items
+- merge: combine multiple Observable into one by merging their emissions
+- SequenceEqual: determine whether two Observable emit the same sequence of items
 - test: returns TestObserver with current Observable subscribed
 
 ### Testing approach:

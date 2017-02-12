@@ -167,10 +167,10 @@ public class CountriesServiceSolvedTest {
     }
 
     @Test
-    public void rx_CombineTwoObservablesAndReturnSumOfPopulation(){
+    public void rx_sumPopulationOfCountries(){
         // hint: use "map" operator
         TestObserver<Long> testObserver = countriesService
-                .combineAndReturnTheSumOfPopulation(Observable.fromIterable(allCountries),
+                .sumPopulationOfCountries(Observable.fromIterable(allCountries),
                         Observable.fromIterable(allCountries))
                 .test();
         testObserver.assertResult(CountriesTestProvider.sumPopulationOfAllCountries()
@@ -179,9 +179,9 @@ public class CountriesServiceSolvedTest {
     }
 
     @Test
-    public void rx_CheckIfBothObservableEmitsSameItemsPositive(){
+    public void rx_areEmittingSameItemsPositive(){
         TestObserver<Boolean> testObserver = countriesService
-                .checkIfBothObservableEmitsSameItems(Observable.fromIterable(allCountries),
+                .areEmittingSameItems(Observable.fromIterable(allCountries),
                         Observable.fromIterable(allCountries))
                 .test();
         testObserver.assertResult(true);
@@ -189,9 +189,9 @@ public class CountriesServiceSolvedTest {
     }
 
     @Test
-    public void rx_CheckIfBothObservableEmitsSameItemsNegative(){
+    public void rx_areEmittingSameItemsNegative(){
         TestObserver<Boolean> testObserver = countriesService
-                .checkIfBothObservableEmitsSameItems(Observable.fromIterable(allCountries),
+                .areEmittingSameItems(Observable.fromIterable(allCountries),
                         Observable.empty())
                 .test();
         testObserver.assertResult(false);
@@ -199,19 +199,19 @@ public class CountriesServiceSolvedTest {
     }
 
     @Test
-    public void rx_CheckIfItemExistsPositive(){
+    public void rx_ifObservableEmitsGivenItemPositive(){
         // hint: use "contains" operator
         TestObserver<Boolean> testObserver =
-                countriesService.checkIfObservableEmitsGivenItem(allCountries,allCountries.get(0))
+                countriesService.ifObservableEmitsGivenItem(allCountries,allCountries.get(0))
                         .test();
         testObserver.assertResult(true);
         testObserver.assertNoErrors();
     }
 
     @Test
-    public void rx_CheckIfItemExistsNegative(){
+    public void rx_ifObservableEmitsGivenItemNegative(){
         TestObserver<Boolean> testObserver =
-                countriesService.checkIfObservableEmitsGivenItem(allCountries,new Country("","",1))
+                countriesService.ifObservableEmitsGivenItem(allCountries,new Country("","",1))
                         .test();
         testObserver.assertResult(false);
         testObserver.assertNoErrors();
