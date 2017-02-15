@@ -1,5 +1,6 @@
 package org.sergiiz.rxkata;
 
+import io.reactivex.Observable;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -186,5 +187,57 @@ public class CountriesServiceSolvedTest {
         }
         values.assertResult(expected);
         values.assertNoErrors();
+    }
+
+    @Test
+    public void rx_sumPopulationOfCountries(){
+        // hint: use "map" operator
+        TestObserver<Long> testObserver = countriesService
+                .sumPopulationOfCountries(Observable.fromIterable(allCountries),
+                        Observable.fromIterable(allCountries))
+                .test();
+        testObserver.assertResult(CountriesTestProvider.sumPopulationOfAllCountries()
+                + CountriesTestProvider.sumPopulationOfAllCountries());
+        testObserver.assertNoErrors();
+    }
+
+    @Test
+    public void rx_areEmittingSameItemsPositive(){
+        // hint: use "SequenceEqual" operator
+        TestObserver<Boolean> testObserver = countriesService
+                .areEmittingSameItems(Observable.fromIterable(allCountries),
+                        Observable.fromIterable(allCountries))
+                .test();
+        testObserver.assertResult(true);
+        testObserver.assertNoErrors();
+    }
+
+    @Test
+    public void rx_areEmittingSameItemsNegative(){
+        TestObserver<Boolean> testObserver = countriesService
+                .areEmittingSameItems(Observable.fromIterable(allCountries),
+                        Observable.empty())
+                .test();
+        testObserver.assertResult(false);
+        testObserver.assertNoErrors();
+    }
+
+    @Test
+    public void rx_ifObservableEmitsGivenItemPositive(){
+        // hint: use "contains" operator
+        TestObserver<Boolean> testObserver =
+                countriesService.ifObservableEmitsGivenItem(allCountries,allCountries.get(0))
+                .test();
+        testObserver.assertResult(true);
+        testObserver.assertNoErrors();
+    }
+
+    @Test
+    public void rx_ifObservableEmitsGivenItemNegative(){
+        TestObserver<Boolean> testObserver =
+                countriesService.ifObservableEmitsGivenItem(allCountries,new Country("","",1))
+                .test();
+        testObserver.assertResult(false);
+        testObserver.assertNoErrors();
     }
 }

@@ -37,7 +37,6 @@ class CountriesServiceSolved implements CountriesService {
         return null; // put your solution here
     }
 
-
     @Override
     public Observable<Country> listPopulationMoreThanOneMillion(List<Country> countries) {
         return null; // put your solution here
@@ -60,6 +59,23 @@ class CountriesServiceSolved implements CountriesService {
 
     @Override
     public Single<Map<String, Long>> mapCountriesToNamePopulation(List<Country> countries) {
+        return null; // put your solution here
+    }
+
+    @Override
+    public Observable<Long> sumPopulationOfCountries(Observable<Country> countryObservable1,
+                                                               Observable<Country> countryObservable2){
+        return null; // put your solution here
+    }
+
+    @Override
+    public Single<Boolean> areEmittingSameItems(Observable<Country> countryObservable1,
+                                                   Observable<Country> countryObservable2){
+        return null; // put your solution here
+    }
+
+    @Override
+    public Single<Boolean> ifObservableEmitsGivenItem(List<Country> countries, Country country) {
         return null; // put your solution here
     }
 }
