@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.FutureTask;
 
+import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
@@ -53,7 +54,7 @@ class CountriesServiceSolved implements CountriesService {
     }
 
     @Override
-    public Observable<Long> sumPopulationOfCountries(List<Country> countries) {
+    public Maybe<Long> sumPopulationOfCountries(List<Country> countries) {
         return null; // put your solution here
     }
 

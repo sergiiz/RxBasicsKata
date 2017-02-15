@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.FutureTask;
 
+import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
@@ -31,7 +32,7 @@ interface CountriesService {
 
     Observable<String> getCurrencyUsdIfNotFound(String countryName, List<Country> countries);
 
-    Observable<Long> sumPopulationOfCountries(List<Country> countries);
+    Maybe<Long> sumPopulationOfCountries(List<Country> countries);
 
     Observable<Long> sumPopulationOfCountries(Observable<Country> countryObservable1,
                                               Observable<Country> countryObservable2);
