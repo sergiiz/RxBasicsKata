@@ -1,11 +1,12 @@
 package org.sergiiz.rxkata;
 
-import io.reactivex.Observable;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.Timeout;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -13,8 +14,8 @@ import java.util.Map;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
-import org.junit.rules.Timeout;
 
 public class CountriesServiceSolvedTest {
 
@@ -190,11 +191,10 @@ public class CountriesServiceSolvedTest {
     }
 
     @Test
-    public void rx_sumPopulationOfCountries(){
+    public void rx_sumPopulationOfCountries() {
         // hint: use "map" operator
         TestObserver<Long> testObserver = countriesService
-                .sumPopulationOfCountries(Observable.fromIterable(allCountries),
-                        Observable.fromIterable(allCountries))
+                .sumPopulationOfCountries(Observable.fromIterable(allCountries), Observable.fromIterable(allCountries))
                 .test();
         testObserver.assertResult(CountriesTestProvider.sumPopulationOfAllCountries()
                 + CountriesTestProvider.sumPopulationOfAllCountries());
@@ -202,42 +202,26 @@ public class CountriesServiceSolvedTest {
     }
 
     @Test
-    public void rx_areEmittingSameItemsPositive(){
-        // hint: use "SequenceEqual" operator
+    public void rx_areEmittingSameSequences_Positive() {
+        // hint: use "sequenceEqual" operator
         TestObserver<Boolean> testObserver = countriesService
-                .areEmittingSameItems(Observable.fromIterable(allCountries),
-                        Observable.fromIterable(allCountries))
+                .areEmittingSameSequences(Observable.fromIterable(allCountries), Observable.fromIterable(allCountries))
                 .test();
         testObserver.assertResult(true);
         testObserver.assertNoErrors();
     }
 
     @Test
-    public void rx_areEmittingSameItemsNegative(){
+    public void rx_areEmittingSameSequences_Negative() {
+        List<Country> allCountriesDifferentSequence = new ArrayList<>(allCountries);
+        Collections.swap(allCountriesDifferentSequence, 0, 1);
         TestObserver<Boolean> testObserver = countriesService
-                .areEmittingSameItems(Observable.fromIterable(allCountries),
-                        Observable.empty())
+                .areEmittingSameSequences(
+                        Observable.fromIterable(allCountries),
+                        Observable.fromIterable(allCountriesDifferentSequence))
                 .test();
         testObserver.assertResult(false);
         testObserver.assertNoErrors();
     }
 
-    @Test
-    public void rx_ifObservableEmitsGivenItemPositive(){
-        // hint: use "contains" operator
-        TestObserver<Boolean> testObserver =
-                countriesService.ifObservableEmitsGivenItem(allCountries,allCountries.get(0))
-                .test();
-        testObserver.assertResult(true);
-        testObserver.assertNoErrors();
-    }
-
-    @Test
-    public void rx_ifObservableEmitsGivenItemNegative(){
-        TestObserver<Boolean> testObserver =
-                countriesService.ifObservableEmitsGivenItem(allCountries,new Country("","",1))
-                .test();
-        testObserver.assertResult(false);
-        testObserver.assertNoErrors();
-    }
 }

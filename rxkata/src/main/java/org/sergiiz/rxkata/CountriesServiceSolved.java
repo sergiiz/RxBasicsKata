@@ -64,18 +64,13 @@ class CountriesServiceSolved implements CountriesService {
 
     @Override
     public Observable<Long> sumPopulationOfCountries(Observable<Country> countryObservable1,
-                                                               Observable<Country> countryObservable2){
+                                                     Observable<Country> countryObservable2) {
         return null; // put your solution here
     }
 
     @Override
-    public Single<Boolean> areEmittingSameItems(Observable<Country> countryObservable1,
-                                                   Observable<Country> countryObservable2){
-        return null; // put your solution here
-    }
-
-    @Override
-    public Single<Boolean> ifObservableEmitsGivenItem(List<Country> countries, Country country) {
+    public Single<Boolean> areEmittingSameSequences(Observable<Country> countryObservable1,
+                                                    Observable<Country> countryObservable2) {
         return null; // put your solution here
     }
 }
