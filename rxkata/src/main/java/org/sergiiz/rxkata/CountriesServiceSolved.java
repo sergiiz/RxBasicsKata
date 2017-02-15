@@ -56,7 +56,7 @@ class CountriesServiceSolved implements CountriesService {
         return Observable.fromFuture(countriesFromNetwork, Schedulers.io()) // solution
                 .flatMap(countriesList -> Observable.fromIterable(countriesList))
                 .filter(country -> country.population > 1000000)
-                .timeout(1, TimeUnit.SECONDS,  Observable.empty());
+                .timeout(1, TimeUnit.SECONDS, Observable.empty());
     }
 
     @Override
@@ -86,12 +86,15 @@ class CountriesServiceSolved implements CountriesService {
     @Override
     public Observable<Long> sumPopulationOfCountries(Observable<Country> countryObservable1,
                                                      Observable<Country> countryObservable2) {
-        return null; // put your solution here
+        return Observable.merge(countryObservable1, countryObservable2)
+                .map(country -> country.population)
+                .reduce((i1, i2) -> i1 + i2)
+                .toObservable();
     }
 
     @Override
     public Single<Boolean> areEmittingSameSequences(Observable<Country> countryObservable1,
                                                     Observable<Country> countryObservable2) {
-        return null; // put your solution here
+        return Observable.sequenceEqual(countryObservable1, countryObservable2);
     }
 }
