@@ -119,7 +119,6 @@ public class CountriesServiceSolvedTest {
             TimeUnit.MILLISECONDS.sleep(100);
             return allCountries;
         });
-        new Thread(futureTask).start();
         TestObserver<Country> testObserver = countriesService
                 .listPopulationMoreThanOneMillionWithTimeoutFallbackToEmpty(futureTask)
                 .test();
@@ -136,7 +135,6 @@ public class CountriesServiceSolvedTest {
             TimeUnit.HOURS.sleep(1);
             return allCountries;
         });
-        new Thread(futureTask).start();
         TestObserver<Country> testObserver = countriesService
                 .listPopulationMoreThanOneMillionWithTimeoutFallbackToEmpty(futureTask)
                 .test();
