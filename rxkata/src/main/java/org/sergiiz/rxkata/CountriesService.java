@@ -40,4 +40,6 @@ interface CountriesService {
 
     Single<Boolean> areEmittingSameSequences(Observable<Country> countryObservable1,
                                              Observable<Country> countryObservable2);
+
+    Observable<Tuple<String, Long>> getAveragePopulationByCurrency(List<Country> countries);
 }

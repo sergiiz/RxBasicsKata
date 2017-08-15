@@ -1,40 +1,41 @@
 package org.sergiiz.rxkata;
 
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 final class CountriesTestProvider {
-    static final String CURRENCY_EUR = "EUR";
-    static final String CURRENCY_PLN = "PLN";
-    static final String CURRENCY_GBP = "GBP";
-    static final String CURRENCY_UAH = "UAH";
-    static final String CURRENCY_CHF = "CHF";
-
-    private static ArrayList<Country> countries = new ArrayList<>();
-
-    static {
-        countries.add(new Country("Germany", CURRENCY_EUR, 80620000));
-        countries.add(new Country("France", CURRENCY_EUR, 66030000));
-        countries.add(new Country("United Kingdom", CURRENCY_GBP, 64100000));
-        countries.add(new Country("Poland", CURRENCY_PLN, 38530000));
-        countries.add(new Country("Ukraine", CURRENCY_UAH, 45490000));
-        countries.add(new Country("Austria", CURRENCY_EUR, 8474000));
-        countries.add(new Country("Switzerland", CURRENCY_CHF, 8081000));
-        countries.add(new Country("Luxembourg", CURRENCY_EUR, 576249));
-    }
-
     private CountriesTestProvider() {
-        // hidden
     }
 
     static List<Country> countries() {
-        return new ArrayList<>(countries);
+        List<Country> countries = new ArrayList<>();
+        countries.add(new Country("Germany", Currencies.EUR, 80620000));
+        countries.add(new Country("France", Currencies.EUR, 66030000));
+        countries.add(new Country("United Kingdom", Currencies.GBP, 64100000));
+        countries.add(new Country("Poland", Currencies.PLN, 38530000));
+        countries.add(new Country("Ukraine", Currencies.UAH, 45490000));
+        countries.add(new Country("Austria", Currencies.EUR, 8474000));
+        countries.add(new Country("Switzerland", Currencies.CHF, 8081000));
+        countries.add(new Country("Luxembourg", Currencies.EUR, 576249));
+
+        return countries;
+    }
+
+    static class Currencies {
+        static final String EUR = "EUR";
+        static final String PLN = "PLN";
+        static final String GBP = "GBP";
+        static final String UAH = "UAH";
+        static final String CHF = "CHF";
+
+        static String[] all()  {
+            return new String[]{CHF, EUR, GBP, PLN, UAH};
+        }
     }
 
     static List<Country> countriesPopulationMoreThanOneMillion() {
         List<Country> result = new ArrayList<>();
-        for (Country country : countries) {
+        for (Country country : countries()) {
             if (country.population > 1000000) {
                 result.add(country);
             }
@@ -44,16 +45,16 @@ final class CountriesTestProvider {
 
 
     static List<Long> populationOfCountries() {
-        List<Long> result = new ArrayList<>(countries.size());
-        for (Country country : countries) {
+        List<Long> result = new ArrayList<>(countries().size());
+        for (Country country : countries()) {
             result.add(country.population);
         }
         return result;
     }
 
     static List<String> namesOfCountries() {
-        List<String> result = new ArrayList<>(countries.size());
-        for (Country country : countries) {
+        List<String> result = new ArrayList<>(countries().size());
+        for (Country country : countries()) {
             result.add(country.name);
         }
         return result;
@@ -61,9 +62,30 @@ final class CountriesTestProvider {
 
     static Long sumPopulationOfAllCountries() {
         Long result = 0L;
-        for (Country country : countries) {
+        for (Country country : countries()) {
             result += country.population;
         }
+        return result;
+    }
+
+    static List<Tuple<String, Long>> averagePopulationByCurrency() {
+        List<Tuple<String, Long>> result = new ArrayList<>();
+        for (String currency: Currencies.all()) {
+            Long sumOfPopulations = 0L;
+            Integer numberOfCountries = 0;
+            for (Country country : countries()) {
+                if (!country.getCurrency().equals(currency)) continue;
+
+                sumOfPopulations += country.getPopulation();
+                numberOfCountries += 1;
+            }
+
+            if (numberOfCountries > 0) {
+                Long averagePopulation = sumOfPopulations / numberOfCountries;
+                result.add(Tuple.of(currency, averagePopulation));
+            }
+        }
+
         return result;
     }
 }
