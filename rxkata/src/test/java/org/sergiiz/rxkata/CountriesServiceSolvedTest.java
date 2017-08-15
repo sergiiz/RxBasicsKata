@@ -224,4 +224,12 @@ public class CountriesServiceSolvedTest {
         testObserver.assertNoErrors();
     }
 
+    @Test
+    public void rx_getAveragePopulationByCurrency() {
+        TestObserver<Tuple<String, Long>> testObserver = countriesService
+                .getAveragePopulationByCurrency(allCountries)
+                .test();
+        testObserver.assertValueSet(CountriesTestProvider.averagePopulationByCurrency());
+        testObserver.assertNoErrors();
+    }
 }

@@ -73,4 +73,9 @@ class CountriesServiceSolved implements CountriesService {
                                                     Observable<Country> countryObservable2) {
         return null; // put your solution here
     }
+
+    @Override
+    public Observable<Tuple<String, Long>> getAveragePopulationByCurrency(List<Country> countries) {
+        return null; // put your solution here
+    }
 }
