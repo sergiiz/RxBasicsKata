@@ -1,5 +1,3 @@
-package org.sergiiz.rxkata;
-
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;

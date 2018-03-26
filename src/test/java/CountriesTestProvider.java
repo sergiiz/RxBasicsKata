@@ -1,6 +1,3 @@
-package org.sergiiz.rxkata;
-
-
 import java.util.ArrayList;
 import java.util.List;
 
