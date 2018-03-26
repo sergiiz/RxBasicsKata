@@ -8,6 +8,7 @@
 /build
 /captures
 /secret
+/out
 
 local.properties
 release.properties

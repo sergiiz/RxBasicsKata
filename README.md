@@ -2,6 +2,10 @@
 
 A set of simple code challenges to learn RxJava using JUnit tests as an acceptance criteria. Focused on some basic concepts and doesn't cover any Android topics yet.
 
+
+[!["Solved" branch](https://travis-ci.org/sergiiz/RxBasicsKata.svg?branch=master)](https://travis-ci.org/sergiiz/RxBasicsKata.svg?branch=master)
+
+
 ## Current implementation
 ### Dependencies:
 - RxJava 2.0.5 
