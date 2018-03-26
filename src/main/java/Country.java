@@ -1,6 +1,3 @@
-package org.sergiiz.rxkata;
-
-
 class Country {
     final String name;
     final String currency;

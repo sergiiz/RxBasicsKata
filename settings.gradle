@@ -1,1 +1,1 @@
-include ':rxkata'
+rootProject.name = 'test'
