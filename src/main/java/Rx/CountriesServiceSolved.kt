@@ -27,10 +27,11 @@ class CountriesServiceSolved : CountriesService {
         return obsCountries.map { it.name }
     }
 
-//    override fun listOnly3rdAnd4thCountry(countries: List<Country>): Observable<Country>? {
-//        return null // put your solution here
-//    }
-//
+    override fun listOnly3rdAnd4thCountry(countries: List<Country>): Observable<Country> {
+        val thirdandforth = listOf<Country>(countries[2],countries[3])
+        return Observable.fromIterable(thirdandforth)
+    }
+
 //    override fun isAllCountriesPopulationMoreThanOneMillion(countries: List<Country>): Single<Boolean>? {
 //        return null // put your solution here
 //    }
