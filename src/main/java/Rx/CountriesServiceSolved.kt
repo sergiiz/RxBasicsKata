@@ -8,24 +8,25 @@ import io.reactivex.Single
 class CountriesServiceSolved : CountriesService {
 
     override fun countryNameInCapitals(country: Country): Single<String> {
-        val capName = Single.just(country.name.toUpperCase())
-        return capName
+        val capName = country.name.toUpperCase()
+        return Single.just(capName)
     }
 
      override fun countCountries(countries: List<Country>): Single<Int> {
-        val count = Single.just(countries.count())
-        return count
+        val count = countries.count()
+        return Single.just(count)
     }
 
     override fun listPopulationOfEachCountry(countries: List<Country>): Observable<Long> {
-        val listPopulation = Observable.fromIterable(countries).map { it.population }
-        return  listPopulation
+        val obsCountries = Observable.fromIterable(countries)
+        return  obsCountries.map { it.population }
     }
 
-//    override fun listNameOfEachCountry(countries: List<Country>): Observable<String>? {
-//        return null // put your solution here
-//    }
-//
+    override fun listNameOfEachCountry(countries: List<Country>): Observable<String> {
+        val obsCountries = Observable.fromIterable(countries)
+        return obsCountries.map { it.name }
+    }
+
 //    override fun listOnly3rdAnd4thCountry(countries: List<Country>): Observable<Country>? {
 //        return null // put your solution here
 //    }

@@ -13,8 +13,8 @@ interface CountriesService {
     fun countCountries(countries: List<Country>): Single<Int>
 
     fun listPopulationOfEachCountry(countries: List<Country>): Observable<Long>
-//
-//    fun listNameOfEachCountry(countries: List<Country>): Observable<String>
+
+    fun listNameOfEachCountry(countries: List<Country>): Observable<String>
 //
 //    fun listOnly3rdAnd4thCountry(countries: List<Country>): Observable<Country>
 //

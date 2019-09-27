@@ -65,16 +65,16 @@ public class CountriesServiceSolvedTest {
         testObserver.assertNoErrors();
     }
 
-//    @Test
-//    public void rx_ListNameOfEachCountry() {
-//        List<String> expectedResult = CountriesTestProvider.namesOfCountries();
-//        TestObserver<String> testObserver = countriesService
-//                .listNameOfEachCountry(allCountries)
-//                .test();
-//        testObserver.assertValueSet(expectedResult);
-//        testObserver.assertNoErrors();
-//    }
-//
+    @Test
+    public void rx_ListNameOfEachCountry() {
+        List<String> expectedResult = CountriesTestProvider.namesOfCountries();
+        TestObserver<String> testObserver = countriesService
+                .listNameOfEachCountry(allCountries)
+                .test();
+        testObserver.assertValueSet(expectedResult);
+        testObserver.assertNoErrors();
+    }
+
 //    @Test
 //    public void rx_ListOnly3rdAnd4thCountry() {
 //        List<Country> expectedResult = new ArrayList<>();
