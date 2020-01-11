@@ -1,8 +1,3 @@
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.Timeout;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -12,18 +7,17 @@ import java.util.Map;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observable;
-import io.reactivex.observers.TestObserver;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.observers.TestObserver;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class CountriesServiceSolvedTest {
 
     private CountriesService countriesService;
     private List<Country> allCountries;
 
-    @Rule
-    public Timeout globalTimeout = Timeout.seconds(2);
-
-    @Before
+    @BeforeEach
     public void setUp() {
         countriesService = new CountriesServiceSolved();
         allCountries = CountriesTestProvider.countries();
@@ -56,7 +50,7 @@ public class CountriesServiceSolvedTest {
         TestObserver<Long> testObserver = countriesService
                 .listPopulationOfEachCountry(allCountries)
                 .test();
-        testObserver.assertValueSet(expectedResult);
+        testObserver.assertValueSequence(expectedResult);
         testObserver.assertNoErrors();
     }
 
@@ -66,7 +60,7 @@ public class CountriesServiceSolvedTest {
         TestObserver<String> testObserver = countriesService
                 .listNameOfEachCountry(allCountries)
                 .test();
-        testObserver.assertValueSet(expectedResult);
+        testObserver.assertValueSequence(expectedResult);
         testObserver.assertNoErrors();
     }
 
@@ -79,7 +73,7 @@ public class CountriesServiceSolvedTest {
         TestObserver<Country> testObserver = countriesService
                 .listOnly3rdAnd4thCountry(allCountries)
                 .test();
-        testObserver.assertValueSet(expectedResult);
+        testObserver.assertValueSequence(expectedResult);
         testObserver.assertNoErrors();
     }
 
@@ -107,12 +101,12 @@ public class CountriesServiceSolvedTest {
         TestObserver<Country> testObserver = countriesService
                 .listPopulationMoreThanOneMillion(allCountries)
                 .test();
-        testObserver.assertValueSet(expectedResult);
+        testObserver.assertValueSequence(expectedResult);
         testObserver.assertNoErrors();
     }
 
     @Test
-    public void rx_ListPopulationMoreThanOneMillionWithTimeoutFallbackToEmpty_When_NoTimeout() {
+    public void rx_ListPopulationMoreThanOneMillionWithTimeoutFallbackToEmpty_When_NoTimeout() throws InterruptedException {
         FutureTask<List<Country>> futureTask = new FutureTask<>(() -> {
             TimeUnit.MILLISECONDS.sleep(100);
             return allCountries;
@@ -122,23 +116,23 @@ public class CountriesServiceSolvedTest {
                 .listPopulationMoreThanOneMillionWithTimeoutFallbackToEmpty(futureTask)
                 .test();
         List<Country> expectedResult = CountriesTestProvider.countriesPopulationMoreThanOneMillion();
-        testObserver.awaitTerminalEvent();
+        testObserver.await();
         testObserver.assertComplete();
-        testObserver.assertValueSet(expectedResult);
+        testObserver.assertValueSequence(expectedResult);
         testObserver.assertNoErrors();
     }
 
     @Test
-    public void rx_ListPopulationMoreThanOneMillionWithTimeoutFallbackToEmpty_When_Timeout() {
+    public void rx_ListPopulationMoreThanOneMillionWithTimeoutFallbackToEmpty_When_Timeout() throws InterruptedException {
         FutureTask<List<Country>> futureTask = new FutureTask<>(() -> {
-            TimeUnit.HOURS.sleep(1);
+            TimeUnit.SECONDS.sleep(15);
             return allCountries;
         });
         new Thread(futureTask).start();
         TestObserver<Country> testObserver = countriesService
                 .listPopulationMoreThanOneMillionWithTimeoutFallbackToEmpty(futureTask)
                 .test();
-        testObserver.awaitTerminalEvent();
+        testObserver.await();
         testObserver.assertComplete();
         testObserver.assertNoValues();
         testObserver.assertNoErrors();
