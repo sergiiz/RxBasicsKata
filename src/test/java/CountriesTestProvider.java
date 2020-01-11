@@ -57,7 +57,7 @@ final class CountriesTestProvider {
     }
 
     static Long sumPopulationOfAllCountries() {
-        Long result = 0L;
+        long result = 0L;
         for (Country country : countries) {
             result += country.population;
         }
