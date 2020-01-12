@@ -125,7 +125,7 @@ public class CountriesServiceSolvedTest {
     @Test
     public void rx_ListPopulationMoreThanOneMillionWithTimeoutFallbackToEmpty_When_Timeout() throws InterruptedException {
         FutureTask<List<Country>> futureTask = new FutureTask<>(() -> {
-            TimeUnit.SECONDS.sleep(15);
+            TimeUnit.SECONDS.sleep(2);
             return allCountries;
         });
         new Thread(futureTask).start();

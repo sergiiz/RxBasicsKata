@@ -13,6 +13,7 @@ class CountriesServiceSolved implements CountriesService {
 
     public static final int A_MILLION = 1_000_000;
     public static final Predicate<Country> countryWithPopulationMoreThanAMillion = country -> country.population > A_MILLION;
+    public static final String DEFAULT_CURRENCY = "USD";
 
     @Override
     public Single<String> countryNameInCapitals(Country country) {
@@ -47,13 +48,13 @@ class CountriesServiceSolved implements CountriesService {
     @Override
     public Single<Boolean> isAllCountriesPopulationMoreThanOneMillion(List<Country> countries) {
         return Flowable.fromIterable(countries)
-          .all(countryWithPopulationMoreThanAMillion); // put your solution here
+          .all(countryWithPopulationMoreThanAMillion);
     }
 
     @Override
     public Observable<Country> listPopulationMoreThanOneMillion(List<Country> countries) {
         return Observable.fromIterable(countries)
-          .filter(countryWithPopulationMoreThanAMillion); // put your solution here
+          .filter(countryWithPopulationMoreThanAMillion);
     }
 
     @Override
@@ -61,7 +62,7 @@ class CountriesServiceSolved implements CountriesService {
         return Observable.fromFuture(countriesFromNetwork)
           .flatMap(Observable::fromIterable)
           .filter(countryWithPopulationMoreThanAMillion)
-          .timeout(10, TimeUnit.SECONDS, Observable.empty());
+          .timeout(1, TimeUnit.SECONDS, Observable.empty());
     }
 
     @Override
@@ -69,14 +70,14 @@ class CountriesServiceSolved implements CountriesService {
         return Observable.fromIterable(countries)
           .filter(country -> country.getName().equals(countryName))
           .map(Country::getCurrency)
-          .defaultIfEmpty("USD");
+          .defaultIfEmpty(DEFAULT_CURRENCY);
     }
 
     @Override
     public Observable<Long> sumPopulationOfCountries(List<Country> countries) {
         return Observable.fromIterable(countries)
           .map(Country::getPopulation)
-          .reduce(0L, Long::sum)
+          .reduce(Long::sum)
           .toObservable();
     }
 
