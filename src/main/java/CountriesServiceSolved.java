@@ -1,9 +1,9 @@
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
+
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.FutureTask;
-
-import io.reactivex.Observable;
-import io.reactivex.Single;
 
 class CountriesServiceSolved implements CountriesService {
 
