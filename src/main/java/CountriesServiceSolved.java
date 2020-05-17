@@ -1,93 +1,101 @@
-import io.reactivex.Observable;
-import io.reactivex.Single;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.functions.Predicate;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 class CountriesServiceSolved implements CountriesService {
 
+    public static final int A_MILLION = 1_000_000;
+    public static final Predicate<Country> countryWithPopulationMoreThanAMillion = country -> country.population > A_MILLION;
+    public static final String DEFAULT_CURRENCY = "USD";
+
     @Override
     public Single<String> countryNameInCapitals(Country country) {
-        return Single.just(country.name.toUpperCase(Locale.US)); // solution
+        return Single.just(country)
+          .map(Country::getName)
+          .map(String::toUpperCase);
     }
 
     public Single<Integer> countCountries(List<Country> countries) {
-        return Single.just(countries.size()); // solution
+        return Single.just(countries)
+          .map(List::size);
     }
 
     public Observable<Long> listPopulationOfEachCountry(List<Country> countries) {
-        return Observable.fromIterable(countries) // solution
-                .map(country -> country.population);
+        return Observable.fromIterable(countries)
+          .map(Country::getPopulation);
     }
 
     @Override
     public Observable<String> listNameOfEachCountry(List<Country> countries) {
-        return Observable.fromIterable(countries) // solution
-                .map(country -> country.name);
+        return Observable.fromIterable(countries)
+          .map(Country::getName);
     }
 
     @Override
     public Observable<Country> listOnly3rdAnd4thCountry(List<Country> countries) {
-        return Observable.fromIterable(countries) // solution
-                .skip(2)
-                .take(2);
+        return Observable.fromIterable(countries)
+          .skip(2)
+          .take(2);
     }
 
     @Override
     public Single<Boolean> isAllCountriesPopulationMoreThanOneMillion(List<Country> countries) {
-        return Observable.fromIterable(countries)  // solution
-                .all(country -> country.population > 1000000);
+        return Flowable.fromIterable(countries)
+          .all(countryWithPopulationMoreThanAMillion);
     }
 
     @Override
     public Observable<Country> listPopulationMoreThanOneMillion(List<Country> countries) {
-        return Observable.fromIterable(countries)  // solution
-                .filter(country -> country.population > 1000000);
+        return Observable.fromIterable(countries)
+          .filter(countryWithPopulationMoreThanAMillion);
     }
 
     @Override
     public Observable<Country> listPopulationMoreThanOneMillionWithTimeoutFallbackToEmpty(final FutureTask<List<Country>> countriesFromNetwork) {
-        return Observable.fromFuture(countriesFromNetwork, Schedulers.io()) // solution
-                .flatMap(countriesList -> Observable.fromIterable(countriesList))
-                .filter(country -> country.population > 1000000)
-                .timeout(1, TimeUnit.SECONDS, Observable.empty());
+        return Observable.fromFuture(countriesFromNetwork)
+          .flatMap(Observable::fromIterable)
+          .filter(countryWithPopulationMoreThanAMillion)
+          .timeout(1, TimeUnit.SECONDS, Observable.empty());
     }
 
     @Override
     public Observable<String> getCurrencyUsdIfNotFound(String countryName, List<Country> countries) {
-        return Observable.fromIterable(countries) // solution
-                .filter(country -> country.name.equals(countryName))
-                .map(country -> country.currency)
-                .defaultIfEmpty("USD");
+        return Observable.fromIterable(countries)
+          .filter(country -> country.getName().equals(countryName))
+          .map(Country::getCurrency)
+          .defaultIfEmpty(DEFAULT_CURRENCY);
     }
 
     @Override
     public Observable<Long> sumPopulationOfCountries(List<Country> countries) {
-        return Observable.fromIterable(countries)  // solution
-                .map(country -> country.population)
-                .reduce((i1, i2) -> i1 + i2)
-                .toObservable();
+        return Observable.fromIterable(countries)
+          .map(Country::getPopulation)
+          .reduce(Long::sum)
+          .toObservable();
     }
 
     @Override
     public Single<Map<String, Long>> mapCountriesToNamePopulation(List<Country> countries) {
-        return Observable.fromIterable(countries)  // solution
-                .toMap(
-                        country -> country.name,
-                        country -> country.population);
+        return Observable.fromIterable(countries)
+          .toMap(
+            Country::getName,
+            Country::getPopulation
+          );
     }
 
     @Override
     public Observable<Long> sumPopulationOfCountries(Observable<Country> countryObservable1,
                                                      Observable<Country> countryObservable2) {
-        return Observable.merge(countryObservable1, countryObservable2)
-                .map(country -> country.population)
-                .reduce((i1, i2) -> i1 + i2)
-                .toObservable();
+        return countryObservable1.concatWith(countryObservable2)
+          .collect(Collectors.summingLong(Country::getPopulation))
+          .toObservable();
     }
 
     @Override
